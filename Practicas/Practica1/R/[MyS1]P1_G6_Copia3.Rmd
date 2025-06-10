@@ -1,0 +1,702 @@
+---
+title: "Practica 1 - G8"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+Smart Packaging es una solución innovadora que demuestra el potencial de aplicar tecnología avanzada a los procesos logísticos de empaque. Sin embargo, los inversores de la empresa han expresado preocupación por el incremento constante en los costos energéticos. Uno de los inversores obtuvo información detallada sobre el consumo energético y la exportó en el archivo POE_2023.xlsx, el cual contiene registros del consumo medido en MWh. Este inversor considera que dicha información es clave para evaluar la rentabilidad del negocio. Con base en la construcción de un modelo de análisis, se desea responder a las siguientes preguntas:
+
+# 1. ¿Cuál es el costo actual del consumo energético, considerando que los robots consumen actualmente 0.2 MWh y operan bajo el horario laboral vigente (08:00 a 20:00 horas)?
+
+```{r}
+# Cargar las librerías
+library(readxl)    
+library(dplyr)     
+library(tidyr)     
+library(lubridate) 
+library(ggplot2) 
+
+ARCHIVO_EXCEL <- "POE_2023.xlsx"
+
+# horario laboral: de 8:00 AM a 8:00 PM (20:00 horas)
+HORARIO_LABORAL <- 8:20 
+
+# días laborales promedio por mes
+DIAS_LABORALES_MES <- 30
+
+# Parámetros del problema
+CONSUMO_ACTUAL <- 0.2
+HORAS_ACTUALES <- length(HORARIO_LABORAL) #las horas que se trabajan al dia
+
+MESES <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+           "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE")
+```
+
+## Funcion para procesar la información del excel
+
+```{r}
+procesar_datos_energia <- function(archivo_excel) {
+  
+  if (!file.exists(archivo_excel)) {
+    stop(paste("Error: No se encuentra el archivo", archivo_excel))
+  }
+  
+  #almacenar todos los datos procesados
+  datos_completos <- data.frame()
+  
+  # Procesar cada mes del año
+  for (i in 1:length(MESES)) {
+    mes <- MESES[i]
+    
+    tryCatch({
+      # Leer la hoja correspondiente al mes actual del archivo Excel
+      datos_raw <- read_excel(archivo_excel, sheet = mes, col_names = FALSE, col_types = "text")
+      
+      # Buscar en qué fila está la palabra "Hora" porque ahi van a iniciar los datos
+      fila_hora <- which(datos_raw[[1]] == "Hora", arr.ind = TRUE)
+      
+      if (length(fila_hora) > 0) {
+        # Los datos reales empiezan en la fila de abajo
+        inicio_datos <- fila_hora[1] + 1
+        # Extraer solo las filas que contienen datos
+        datos_mes <- datos_raw[inicio_datos:nrow(datos_raw), ]
+        
+        # Sacamos los encabezados para saber los dias del mes
+        encabezados <- datos_raw[fila_hora[1], ]
+        dias_mes <- suppressWarnings(as.numeric(unlist(encabezados[3:ncol(encabezados)])))
+        # Filtrar solo días válidos (entre 1 y 31, sin valores NA)
+        dias_mes <- dias_mes[!is.na(dias_mes) & dias_mes >= 1 & dias_mes <= 31]
+        
+        registros_mes <- 0
+        
+        # Procesar cada fila de datos que vendra siendo cada hora del dia
+        for (fila in 1:nrow(datos_mes)) {
+          primera_col <- datos_mes[fila, 1]
+          
+          # Verificar que la celda no esté vacía
+          if (!is.na(primera_col) && !is.null(primera_col) && primera_col != "") {
+            
+            # VAlidamos que los datos vengan en formato de fraccion que es el formato que usa excel para las horas
+            # suppressWarnings evita mostrar advertencias si la conversión falla
+            hora_fraccion <- suppressWarnings(as.numeric(primera_col))
+            
+            if (!is.na(hora_fraccion) && is.numeric(hora_fraccion)) {
+              # Convertir la fracción de día a hora del día (0-23) para que sea facil de entender
+              hora <- floor(hora_fraccion * 24)
+              
+              if (!is.na(hora) && hora >= 0 && hora <= 23) {
+                
+                # Procesar cada día del mes actual
+                for (col in 1:length(dias_mes)) {
+                  dia <- dias_mes[col]
+                  
+                  # Obtener el precio de energía para esta hora y día específicos
+                  # col + 2 porque las primeras 2 columnas son hora, los días empiezan en la 3ra
+                  precio_raw <- datos_mes[fila, col + 2]
+                  precio <- suppressWarnings(as.numeric(precio_raw))
+                  
+                  if (!is.na(precio) && !is.na(dia) && precio > 0) {
+                    # Agregar este registro al data frame de datos completos
+                    datos_completos <- rbind(datos_completos, data.frame(
+                      mes = mes,              
+                      mes_num = i,            
+                      dia = dia,              
+                      hora = hora,            
+                      precio_mwh = precio,    # Precio de energía en USD/MWh
+                      stringsAsFactors = FALSE 
+                    ))
+                    # Incrementar el contador de registros procesados para este mes
+                    registros_mes <- registros_mes + 1
+                  }
+                }
+              }
+            }
+          }
+        }
+        cat(registros_mes, "registros\n")
+      } else {
+        # Si no se encontró la fila de "Hora"
+        cat("no se encontró fila 'Hora'\n")
+      }
+    }, error = function(e) {
+      # Si ocurre algún error durante el procesamiento, mostrar el mensaje
+      cat("Error:", conditionMessage(e), "\n")
+    })
+  }
+  
+  # Mostrar el total de registros procesados de todos los meses
+  cat("Total de registros procesados:", nrow(datos_completos), "\n")
+  return(datos_completos)
+}
+```
+
+### Procesar datos
+
+```{r}
+# Ejecutar la función para procesar todos los datos del archivo Excel
+datos <- procesar_datos_energia(ARCHIVO_EXCEL)
+
+# Filtrar los datos para incluir solo las horas del horario laboral (8:00 a 20:00)
+datos_laborales <- datos %>%
+  filter(hora %in% HORARIO_LABORAL)
+
+resumen_datos <- datos_laborales %>%
+  group_by(mes) %>%  # Agrupar los datos por mes
+  summarise(
+    registros = n(),  
+    precio_min = min(precio_mwh, na.rm = TRUE),      
+    precio_max = max(precio_mwh, na.rm = TRUE),      
+    precio_promedio = mean(precio_mwh, na.rm = TRUE), 
+    .groups = 'drop'
+  )
+
+```
+
+### Calculos
+
+```{r}
+# Calcular los costos mensuales basados en el consumo actual
+costos_mensuales <- datos_laborales %>%
+  group_by(mes, mes_num) %>%  # Agrupar por mes y número de mes
+  summarise(
+    precio_promedio = mean(precio_mwh, na.rm = TRUE),
+    registros = n(),  
+    .groups = 'drop'  
+  ) %>%
+  mutate(
+    # Precio promedio × Consumo por hora × Horas por día × Días por mes
+    costo_mensual_actual = precio_promedio * CONSUMO_ACTUAL * HORAS_ACTUALES * DIAS_LABORALES_MES
+  ) %>%
+  arrange(mes_num)
+
+# Calcular el costo total anual sumando todos los costos mensuales
+costo_anual_actual <- sum(costos_mensuales$costo_mensual_actual)
+```
+
+### RESPUESTA 1
+
+```{r}
+cat("\nCOSTO ACTUAL DEL CONSUMO ENERGÉTICO\n", "Costo anual total:", scales::dollar(costo_anual_actual), "\n", "Costo mensual promedio:", scales::dollar(costo_anual_actual/12), "\n")
+```
+
+# 2. Si se modifica el modelo para que los robots consuman 0.15 MWh, pero trabajen la mitad del tiempo, ¿sigue siendo rentable la operación?
+
+```{r}
+
+CONSUMO_NUEVO <- 0.15
+HORAS_NUEVAS <- HORAS_ACTUALES / 2
+
+```
+
+### Calculos
+
+```{r}
+costos_mensuales_nuevos <- costos_mensuales %>%
+  mutate(
+  costo_mensual_nuevo = precio_promedio * CONSUMO_NUEVO * HORAS_NUEVAS * DIAS_LABORALES_MES,
+  ahorro_mensual = costo_mensual_actual - costo_mensual_nuevo,
+    porcentaje_ahorro = (ahorro_mensual / costo_mensual_actual) * 100
+  )
+
+costo_anual_nuevo <- sum(costos_mensuales_nuevos$costo_mensual_nuevo)
+ahorro_anual <- costo_anual_actual - costo_anual_nuevo
+porcentaje_ahorro_anual <- (ahorro_anual / costo_anual_actual) * 100
+```
+
+### RESPUESTA 2
+
+```{r}
+cat("\nRENTABILIDAD DEL NUEVO MODELO\n", "Costo anual actual:", scales::dollar(costo_anual_actual), "\n", "Costo anual propuesto:", scales::dollar(costo_anual_nuevo), "\n", "Ahorro anual:", scales::dollar(ahorro_anual), "\n", "Porcentaje de ahorro:", round(porcentaje_ahorro_anual, 1), "%\n")
+
+```
+
+```{r}
+cat(" El modelo propuesto genera ahorros superiores al 60%\n")
+```
+
+# 3. Los inversores desean identificar el mes más rentable y el mes menos rentable. Esta información debe presentarse en:
+
+## Una tabla comparativa mensual.
+
+```{r}
+tabla_comparativa <- costos_mensuales_nuevos %>%
+  mutate(
+    Mes = mes,
+    `Precio Promedio ($/MWh)` = round(precio_promedio, 2),
+    `Costo Actual ($)` = round(costo_mensual_actual, 0)
+  ) %>%
+  select(Mes, `Precio Promedio ($/MWh)`, `Costo Actual ($)`)
+
+print(tabla_comparativa)
+```
+
+## Una gráfica ordenada por mes, que permita visualizar tendencias de aumento o disminución en la rentabilidad.
+
+```{r}
+datos_grafico <- costos_mensuales_nuevos %>%
+  select(mes, mes_num, costo_mensual_actual, costo_mensual_nuevo, precio_promedio, ahorro_mensual) %>%
+  pivot_longer(cols = c(costo_mensual_actual, costo_mensual_nuevo), 
+               names_to = "modelo", values_to = "costo") %>%
+  mutate(
+    modelo = case_when(
+      modelo == "costo_mensual_actual" ~ "Modelo Actual",
+      modelo == "costo_mensual_nuevo" ~ "Modelo Propuesto"
+    ),
+    mes_abrev = factor(substr(mes, 1, 3), 
+                       levels = substr(MESES, 1, 3))
+  )
+
+grafico_costos <- ggplot(datos_grafico, aes(x = mes_num, y = costo, color = modelo)) +
+  geom_line(size = 1.2, alpha = 0.8) +
+  geom_point(size = 3.5, alpha = 0.9) +
+  scale_x_continuous(breaks = 1:12, labels = substr(MESES, 1, 3)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_manual(
+    values = c("Modelo Actual" = "#E74C3C", "Modelo Propuesto" = "#27AE60"),
+    name = "Modelo"
+  ) +
+  labs(
+    title = "Comparación de Costos Energéticos Mensuales 2023",
+    subtitle = paste("Smart Packaging - Ahorro anual proyectado:", scales::dollar(ahorro_anual)),
+    x = "Mes",
+    y = "Costo Mensual (USD)",
+    caption = "Fuente: POE_2023.xslx"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "#349beb"),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(grafico_costos)
+```
+
+```{r}
+# Filtrar los datos del mes de ENERO
+enero_data <- datos %>%
+  filter(mes == "ENERO")
+
+# Función para calcular el costo total según las horas activas
+calcular_costo_esquema <- function(horas_activas) {
+  enero_data %>%
+    filter(hora %in% horas_activas) %>%
+    summarise(costo_total = sum(precio_mwh * 0.2)) %>%
+    pull(costo_total)
+}
+
+# Definir horas activas por alternativa
+horas_a <- c(4:11, 16:23)       # a) descansa 00-04 y 12-16
+horas_b <- c(0:7, 12:15, 20:23) # b) descansa 08-12 y 16-20
+horas_c <- c(0:7, 12:19)        # c) descansa 08-12 y 20-24
+
+# Calcular costos por alternativa
+costo_a <- calcular_costo_esquema(horas_a)
+costo_b <- calcular_costo_esquema(horas_b)
+costo_c <- calcular_costo_esquema(horas_c)
+
+# Crear tabla comparativa
+df_costos <- data.frame(
+  Alternativa = c("a) 00-04 & 12-16", "b) 08-12 & 16-20", "c) 08-12 & 20-24"),
+  Horas_Operativas = c(length(horas_a), length(horas_b), length(horas_c)) * 31,  # enero tiene 31 días
+  Consumo_Total_MWh = round(c(length(horas_a), length(horas_b), length(horas_c)) * 31 * 0.2, 2),
+  Costo_Total_USD = round(c(costo_a, costo_b, costo_c), 2)
+)
+
+# Mostrar tabla
+df_costos
+
+```
+```{r}
+library(ggplot2)
+
+ggplot(df_costos, aes(x = Alternativa, y = Costo_Total_USD, fill = Alternativa)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = paste0("$", round(Costo_Total_USD, 2))), vjust = -0.5) +
+  labs(
+    title = "Comparación de Costos por Esquema de Operación (ENERO)",
+    x = "Alternativa",
+    y = "Costo Total (USD)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+Conclusión
+Las tres alternativas propuestas mantuvieron el mismo consumo total, pero el costo varió según el horario operado. La opción b) fue la más económica, lo que demuestra que operar en horas con menor tarifa puede reducir costos sin afectar la productividad.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 6)
+
+# Cargar librerías necesarias
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(ggplot2)
+library(gridExtra)
+library(scales)
+library(knitr)
+library(kableExtra)
+```
+
+
+
+```{r funciones_procesamiento}
+cargar_datos_energia <- function(archivo_excel) {
+  # Nombres de los meses en español (como aparecen en las hojas)
+  meses <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+             "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE")
+  
+  # Días por mes en 2023 (año no bisiesto)
+  dias_por_mes <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+  
+  # Lista para almacenar todos los datos
+  datos_completos <- list()
+  
+  
+  for (i in 1:12) {
+    
+    # Leer la hoja del mes actual
+    datos_mes <- read_excel(archivo_excel, sheet = meses[i], skip = 2)
+    
+    # Obtener número de días del mes actual
+    dias_mes <- dias_por_mes[i]
+    
+    # Seleccionar solo las columnas necesarias (Hora + días del mes)
+    columnas_necesarias <- c("Hora", as.character(1:dias_mes))
+    datos_mes <- datos_mes[, columnas_necesarias]
+    
+    # Convertir a formato largo (tidy data)
+    datos_largo <- datos_mes %>%
+      pivot_longer(cols = -Hora, 
+                   names_to = "dia", 
+                   values_to = "consumo_mwh") %>%
+      mutate(
+        mes = i,
+        mes_nombre = meses[i],
+        dia = as.numeric(dia),
+        # Crear fecha completa
+        fecha = as.Date(paste(2023, mes, dia, sep = "-")),
+        # Extraer hora de inicio del intervalo
+        hora_inicio = as.numeric(substr(Hora, 1, 2))
+      ) %>%
+      filter(!is.na(consumo_mwh) & !is.na(fecha))  # Filtrar valores NA
+    
+    # Agregar a la lista
+    datos_completos[[i]] <- datos_largo
+  }
+  
+  # Combinar todos los meses
+  datos_final <- bind_rows(datos_completos)
+  
+  return(datos_final)
+}
+
+```
+
+```{r funciones_variables}
+agregar_variables_contextuales <- function(datos) {
+  # Definir feriados de Guatemala 2023
+  feriados_guatemala_2023 <- as.Date(c(
+    "2023-01-01",  # Año Nuevo
+    "2023-04-06",  # Jueves Santo
+    "2023-04-07",  # Viernes Santo
+    "2023-04-08",  # Sábado de Gloria
+    "2023-05-01",  # Día del Trabajo
+    "2023-06-30",  # Día del Ejército
+    "2023-09-15",  # Día de la Independencia
+    "2023-10-20",  # Día de la Revolución
+    "2023-11-01",  # Día de Todos los Santos
+    "2023-12-24",  # Nochebuena
+    "2023-12-25",  # Navidad
+    "2023-12-31"   # Fin de Año
+  ))
+  
+  # Definir períodos de ciclo escolar en Guatemala 2023
+  # Ciclo escolar típico: febrero-octubre
+  inicio_ciclo_escolar <- as.Date("2023-02-01")
+  fin_ciclo_escolar <- as.Date("2023-10-31")
+  
+  # Agregar todas las variables contextuales
+  datos_enriquecidos <- datos %>%
+    mutate(
+      # Variables básicas de tiempo
+      dia_semana = weekdays(fecha),
+      dia_semana_num = wday(fecha, week_start = 1),  # 1=Lunes, 7=Domingo
+      
+      # Clasificaciones de días
+      es_fin_semana = dia_semana_num %in% c(6, 7),  # Sábado y Domingo
+      es_semana_laboral = dia_semana_num %in% c(1, 2, 3, 4),  # Lunes a Jueves
+      es_viernes = dia_semana_num == 5,
+      
+      # Estación del año (Hemisferio Norte - Guatemala)
+      estacion = case_when(
+        mes %in% c(12, 1, 2) ~ "Verano",     # Diciembre-Febrero (seco)
+        mes %in% c(3, 4, 5) ~ "Primavera",  # Marzo-Mayo (transición)
+        mes %in% c(6, 7, 8) ~ "Invierno",   # Junio-Agosto (lluvioso)
+        mes %in% c(9, 10, 11) ~ "Otoño"     # Septiembre-Noviembre (transición)
+      ),
+      
+      # Ciclo escolar
+      es_ciclo_escolar_activo = fecha >= inicio_ciclo_escolar & fecha <= fin_ciclo_escolar,
+      
+      # Feriados
+      es_feriado = fecha %in% feriados_guatemala_2023,
+      
+      # Clasificaciones de períodos
+      tipo_dia = case_when(
+        es_feriado ~ "Feriado",
+        es_fin_semana ~ "Fin de Semana",
+        es_semana_laboral ~ "Semana Laboral",
+        es_viernes ~ "Viernes",
+        TRUE ~ "Otro"
+      ),
+      
+      # Clasificación de horarios
+      periodo_dia = case_when(
+        hora_inicio >= 0 & hora_inicio < 6 ~ "Madrugada",
+        hora_inicio >= 6 & hora_inicio < 12 ~ "Mañana",
+        hora_inicio >= 12 & hora_inicio < 18 ~ "Tarde",
+        hora_inicio >= 18 & hora_inicio < 24 ~ "Noche"
+      ),
+      
+      # Mes como factor ordenado
+      mes_factor = factor(mes_nombre, levels = c("ENERO", "FEBRERO", "MARZO", "ABRIL", 
+                                                "MAYO", "JUNIO", "JULIO", "AGOSTO", 
+                                                "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE")),
+      
+      # Día de la semana como factor ordenado
+      dia_semana_factor = factor(dia_semana, levels = c("lunes", "martes", "miércoles", 
+                                                       "jueves", "viernes", "sábado", "domingo"))
+    )
+  
+  return(datos_enriquecidos)
+}
+
+```
+
+## 5. Enriquecimiento de la información
+
+El presente análisis evalúa el consumo energético de Smart Packaging durante el año 2023, enriqueciendo los datos originales con variables contextuales clave para una mejor comprensión de los patrones de consumo y su impacto en la rentabilidad del negocio.
+
+```{r funciones_estadisticas}
+realizar_analisis_estadistico <- function(datos) {
+  
+  # Estadísticas generales
+  resumen_general <- datos %>%
+    summarise(
+      total_registros = n(),
+      consumo_promedio = mean(consumo_mwh, na.rm = TRUE),
+      consumo_mediano = median(consumo_mwh, na.rm = TRUE),
+      consumo_min = min(consumo_mwh, na.rm = TRUE),
+      consumo_max = max(consumo_mwh, na.rm = TRUE),
+      desviacion_std = sd(consumo_mwh, na.rm = TRUE),
+      consumo_total_anual = sum(consumo_mwh, na.rm = TRUE)
+    )
+  
+  print(resumen_general)
+  
+  
+  analisis_tipo_dia <- datos %>%
+    group_by(tipo_dia) %>%
+    summarise(
+      registros = n(),
+      consumo_promedio = mean(consumo_mwh, na.rm = TRUE),
+      consumo_total = sum(consumo_mwh, na.rm = TRUE),
+      desviacion_std = sd(consumo_mwh, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    arrange(desc(consumo_promedio))
+  
+  print(analisis_tipo_dia)
+  
+  
+  analisis_estacion <- datos %>%
+    group_by(estacion) %>%
+    summarise(
+      registros = n(),
+      consumo_promedio = mean(consumo_mwh, na.rm = TRUE),
+      consumo_total = sum(consumo_mwh, na.rm = TRUE),
+      desviacion_std = sd(consumo_mwh, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    arrange(desc(consumo_promedio))
+  
+  print(analisis_estacion)
+  
+  cat("\n=== ANÁLISIS POR PERÍODO DEL DÍA ===\n")
+  
+  # Análisis por período del día
+  analisis_periodo_dia <- datos %>%
+    group_by(periodo_dia) %>%
+    summarise(
+      registros = n(),
+      consumo_promedio = mean(consumo_mwh, na.rm = TRUE),
+      consumo_total = sum(consumo_mwh, na.rm = TRUE),
+      desviacion_std = sd(consumo_mwh, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    arrange(desc(consumo_promedio))
+  
+  print(analisis_periodo_dia)
+  
+  # Retornar lista con todos los análisis
+  return(list(
+    general = resumen_general,
+    tipo_dia = analisis_tipo_dia,
+    estacion = analisis_estacion,
+    periodo_dia = analisis_periodo_dia
+  ))
+}
+
+# ===============================================================================
+# 4. FUNCIÓN PARA GENERAR VISUALIZACIONES
+# ===============================================================================
+
+generar_visualizaciones <- function(datos) {
+  
+  # 1. Consumo promedio por mes
+  grafico1 <- datos %>%
+    group_by(mes_factor) %>%
+    summarise(consumo_promedio = mean(consumo_mwh, na.rm = TRUE), .groups = 'drop') %>%
+    ggplot(aes(x = mes_factor, y = consumo_promedio)) +
+    geom_col(fill = "steelblue", alpha = 0.7) +
+    theme_minimal() +
+    labs(title = "Consumo Energético Promedio por Mes",
+         x = "Mes", y = "Consumo Promedio (MWh)") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # 2. Consumo por tipo de día
+  grafico2 <- datos %>%
+    group_by(tipo_dia) %>%
+    summarise(consumo_promedio = mean(consumo_mwh, na.rm = TRUE), .groups = 'drop') %>%
+    ggplot(aes(x = reorder(tipo_dia, consumo_promedio), y = consumo_promedio)) +
+    geom_col(fill = "coral", alpha = 0.7) +
+    coord_flip() +
+    theme_minimal() +
+    labs(title = "Consumo Energético por Tipo de Día",
+         x = "Tipo de Día", y = "Consumo Promedio (MWh)")
+  
+  # 3. Patrón diario promedio por hora
+  grafico3 <- datos %>%
+    group_by(hora_inicio) %>%
+    summarise(consumo_promedio = mean(consumo_mwh, na.rm = TRUE), .groups = 'drop') %>%
+    ggplot(aes(x = hora_inicio, y = consumo_promedio)) +
+    geom_line(color = "darkgreen", size = 1) +
+    geom_point(color = "darkgreen", size = 2) +
+    scale_x_continuous(breaks = seq(0, 23, 2)) +
+    theme_minimal() +
+    labs(title = "Patrón de Consumo por Hora del Día",
+         x = "Hora", y = "Consumo Promedio (MWh)")
+  
+  # 4. Consumo por estación
+  grafico4 <- datos %>%
+    group_by(estacion) %>%
+    summarise(consumo_promedio = mean(consumo_mwh, na.rm = TRUE), .groups = 'drop') %>%
+    ggplot(aes(x = estacion, y = consumo_promedio)) +
+    geom_col(fill = "orange", alpha = 0.7) +
+    theme_minimal() +
+    labs(title = "Consumo Energético por Estación",
+         x = "Estación", y = "Consumo Promedio (MWh)")
+  
+  # 5. Boxplot de consumo por día de la semana
+  grafico5 <- datos %>%
+    ggplot(aes(x = dia_semana_factor, y = consumo_mwh)) +
+    geom_boxplot(fill = "lightblue", alpha = 0.7) +
+    theme_minimal() +
+    labs(title = "Distribución de Consumo por Día de la Semana",
+         x = "Día de la Semana", y = "Consumo (MWh)") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # 6. Comparación ciclo escolar vs no escolar
+  grafico6 <- datos %>%
+    mutate(ciclo_escolar = ifelse(es_ciclo_escolar_activo, "Ciclo Activo", "Ciclo Inactivo")) %>%
+    group_by(ciclo_escolar, hora_inicio) %>%
+    summarise(consumo_promedio = mean(consumo_mwh, na.rm = TRUE), .groups = 'drop') %>%
+    ggplot(aes(x = hora_inicio, y = consumo_promedio, color = ciclo_escolar)) +
+    geom_line(size = 1) +
+    geom_point(size = 2) +
+    scale_x_continuous(breaks = seq(0, 23, 2)) +
+    theme_minimal() +
+    labs(title = "Patrón de Consumo: Ciclo Escolar vs No Escolar",
+         x = "Hora", y = "Consumo Promedio (MWh)",
+         color = "Período")
+  
+  # Mostrar todos los gráficos
+  grid.arrange(grafico1, grafico2, ncol = 2)
+  grid.arrange(grafico3, grafico4, ncol = 2)
+  grid.arrange(grafico5, grafico6, ncol = 2)
+  
+  # Retornar lista de gráficos para uso posterior
+  return(list(
+    mensual = grafico1,
+    tipo_dia = grafico2,
+    horario = grafico3,
+    estacional = grafico4,
+    semanal = grafico5,
+    ciclo_escolar = grafico6
+  ))
+}
+
+# ===============================================================================
+# 5. FUNCIÓN PRINCIPAL DE EJECUCIÓN
+# ===============================================================================
+
+ejecutar_analisis_completo <- function(ruta_archivo) {
+ 
+  
+  # Cargar datos
+  datos_energia <- cargar_datos_energia(ruta_archivo)
+  
+  # Agregar variables contextuales
+  datos_enriquecidos <- agregar_variables_contextuales(datos_energia)
+  
+  # Realizar análisis estadístico
+  resultados_estadisticos <- realizar_analisis_estadistico(datos_enriquecidos)
+  
+  # Generar visualizaciones
+  graficos <- generar_visualizaciones(datos_enriquecidos)
+  
+  # Guardar datos procesados
+  write.csv(datos_enriquecidos, "datos_energia_enriquecidos_2023.csv", row.names = FALSE)
+  
+  # Retornar todos los resultados
+  return(list(
+    datos = datos_enriquecidos,
+    estadisticas = resultados_estadisticos,
+    graficos = graficos
+  ))
+}
+
+# ===============================================================================
+# 6. EJECUCIÓN DEL ANÁLISIS
+# ===============================================================================
+
+# Especificar la ruta del archivo Excel
+# CAMBIAR POR LA RUTA CORRECTA DE TU ARCHIVO
+ruta_archivo <- "POE_2023.xlsx"
+
+# Verificar si el archivo existe
+if (file.exists(ruta_archivo)) {
+  # Ejecutar análisis completo
+  resultados <- ejecutar_analisis_completo(ruta_archivo)
+  
+  cat("\n=== RESUMEN DE INSIGHTS CLAVE ===\n")
+  cat("1. Total de registros procesados:", nrow(resultados$datos), "\n")
+  cat("2. Consumo total anual:", round(sum(resultados$datos$consumo_mwh, na.rm = TRUE), 2), "MWh\n")
+  cat("3. Consumo promedio diario:", round(mean(resultados$datos$consumo_mwh, na.rm = TRUE), 2), "MWh\n")
+  cat("4. Archivo de datos enriquecidos guardado exitosamente\n")
+  
+} else {
+  cat("ERROR: El archivo", ruta_archivo, "no fue encontrado.\n")
+  cat("Por favor, verifica la ruta del archivo y vuelve a intentar.\n")
+}
+
+```
+
