@@ -1,0 +1,4 @@
+Time(Hours);EntityID;ObjectName;ProcessID;StepName;Action
+0.430316715751499;Robots.44;Model;9.Empaque_Exited;[Move] Move8;Error object 'Robots.44' moving resource(s) of type '[Specific] Escaneo'.
+0.430316715751499;Robots.44;Model;9.Empaque_Exited;[Move] Move8;Unable to move '1' resource(s) because the number of resources seized that meet the specified selection criteria is only '0'.
+
