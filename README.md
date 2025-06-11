@@ -11,16 +11,15 @@
 
 ### Practicas
 
-|     CARPETA     |   MD   | Fecha Entrega | Prorroga |
-| :-------------: | :----: | :-----------: | :------: |
-| [Practica 01](./Practicas/Practica1/) | [View](./Manuales/Practica1/) | 11/06 |   ---   |
-| [Practica 02](./Practicas/Practica2/) | [View](./Manuales/Practica2/) | --- |   ---   |
+|     CARPETA     |   MD   | PDF | Fecha Entrega | Prorroga |
+| :-------------: | :----: | :---: | :-----------: | :------: |
+| [Practica 01](./Practicas/Practica1/) | [View](./Manuales/Practica1/) | [View](./Manuales/Practica1/Manual-MyS1-G6.pdf) | 11/06 |   ---   |/Manual-MyS1-G6.pdf| [Practica 02](./Practicas/Practica2/) | [View](./Manuales/Practica2/) | [View](./Manuales/Practica2/) | --- |   ---   |
 
 ### Proyecto
 
-|     CARPETA     |   MD   | Fecha Entrega | Prorroga |
-| :-------------: | :----: | :-----------: | :------: |
-| [Proyecto Único](./Proyecto/) | [View](./Manuales/Proyecto/) | --/06 |   ---   |
+|     CARPETA     |   MD   | PDF | Fecha Entrega | Prorroga |
+| :-------------: | :----: | :---: | :-----------: | :------: |
+| [Proyecto Único](./Proyecto/) | [View](./Manuales/Proyecto/) | [View](./Manuales/Proyecto/) | --/06 |   ---   |
 
 ### Enunciados
 
