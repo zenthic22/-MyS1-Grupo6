@@ -1,0 +1,1140 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Practica 1 - G8},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Practica 1 - G8}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+Smart Packaging es una solución innovadora que demuestra el potencial de
+aplicar tecnología avanzada a los procesos logísticos de empaque. Sin
+embargo, los inversores de la empresa han expresado preocupación por el
+incremento constante en los costos energéticos. Uno de los inversores
+obtuvo información detallada sobre el consumo energético y la exportó en
+el archivo POE\_2023.xlsx, el cual contiene registros del consumo medido
+en MWh. Este inversor considera que dicha información es clave para
+evaluar la rentabilidad del negocio. Con base en la construcción de un
+modelo de análisis, se desea responder a las siguientes preguntas:
+
+\section{1. ¿Cuál es el costo actual del consumo energético,
+considerando que los robots consumen actualmente 0.2 MWh y operan bajo
+el horario laboral vigente (08:00 a 20:00
+horas)?}\label{cuuxe1l-es-el-costo-actual-del-consumo-energuxe9tico-considerando-que-los-robots-consumen-actualmente-0.2-mwh-y-operan-bajo-el-horario-laboral-vigente-0800-a-2000-horas}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Cargar las librerías}
+\FunctionTok{library}\NormalTok{(readxl)    }
+\FunctionTok{library}\NormalTok{(dplyr)     }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Adjuntando el paquete: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyr)     }
+\FunctionTok{library}\NormalTok{(lubridate) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Adjuntando el paquete: 'lubridate'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2) }
+
+\NormalTok{ARCHIVO\_EXCEL }\OtherTok{\textless{}{-}} \StringTok{"POE\_2023.xlsx"}
+
+\CommentTok{\# horario laboral: de 8:00 AM a 8:00 PM (20:00 horas)}
+\NormalTok{HORARIO\_LABORAL }\OtherTok{\textless{}{-}} \DecValTok{8}\SpecialCharTok{:}\DecValTok{20} 
+
+\CommentTok{\# días laborales promedio por mes}
+\NormalTok{DIAS\_LABORALES\_MES }\OtherTok{\textless{}{-}} \DecValTok{30}
+
+\CommentTok{\# Parámetros del problema}
+\NormalTok{CONSUMO\_ACTUAL }\OtherTok{\textless{}{-}} \FloatTok{0.2}
+\NormalTok{HORAS\_ACTUALES }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(HORARIO\_LABORAL) }\CommentTok{\#las horas que se trabajan al dia}
+
+\NormalTok{MESES }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"ENERO"}\NormalTok{, }\StringTok{"FEBRERO"}\NormalTok{, }\StringTok{"MARZO"}\NormalTok{, }\StringTok{"ABRIL"}\NormalTok{, }\StringTok{"MAYO"}\NormalTok{, }\StringTok{"JUNIO"}\NormalTok{,}
+           \StringTok{"JULIO"}\NormalTok{, }\StringTok{"AGOSTO"}\NormalTok{, }\StringTok{"SEPTIEMBRE"}\NormalTok{, }\StringTok{"OCTUBRE"}\NormalTok{, }\StringTok{"NOVIEMBRE"}\NormalTok{, }\StringTok{"DICIEMBRE"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Funcion para procesar la información del
+excel}\label{funcion-para-procesar-la-informaciuxf3n-del-excel}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{procesar\_datos\_energia }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(archivo\_excel) \{}
+  
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{file.exists}\NormalTok{(archivo\_excel)) \{}
+    \FunctionTok{stop}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Error: No se encuentra el archivo"}\NormalTok{, archivo\_excel))}
+\NormalTok{  \}}
+  
+  \CommentTok{\#almacenar todos los datos procesados}
+\NormalTok{  datos\_completos }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
+  
+  \CommentTok{\# Procesar cada mes del año}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(MESES)) \{}
+\NormalTok{    mes }\OtherTok{\textless{}{-}}\NormalTok{ MESES[i]}
+    
+    \FunctionTok{tryCatch}\NormalTok{(\{}
+      \CommentTok{\# Leer la hoja correspondiente al mes actual del archivo Excel}
+\NormalTok{      datos\_raw }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(archivo\_excel, }\AttributeTok{sheet =}\NormalTok{ mes, }\AttributeTok{col\_names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{col\_types =} \StringTok{"text"}\NormalTok{)}
+      
+      \CommentTok{\# Buscar en qué fila está la palabra "Hora" porque ahi van a iniciar los datos}
+\NormalTok{      fila\_hora }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(datos\_raw[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{==} \StringTok{"Hora"}\NormalTok{, }\AttributeTok{arr.ind =} \ConstantTok{TRUE}\NormalTok{)}
+      
+      \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(fila\_hora) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+        \CommentTok{\# Los datos reales empiezan en la fila de abajo}
+\NormalTok{        inicio\_datos }\OtherTok{\textless{}{-}}\NormalTok{ fila\_hora[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+} \DecValTok{1}
+        \CommentTok{\# Extraer solo las filas que contienen datos}
+\NormalTok{        datos\_mes }\OtherTok{\textless{}{-}}\NormalTok{ datos\_raw[inicio\_datos}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(datos\_raw), ]}
+        
+        \CommentTok{\# Sacamos los encabezados para saber los dias del mes}
+\NormalTok{        encabezados }\OtherTok{\textless{}{-}}\NormalTok{ datos\_raw[fila\_hora[}\DecValTok{1}\NormalTok{], ]}
+\NormalTok{        dias\_mes }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(encabezados[}\DecValTok{3}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(encabezados)])))}
+        \CommentTok{\# Filtrar solo días válidos (entre 1 y 31, sin valores NA)}
+\NormalTok{        dias\_mes }\OtherTok{\textless{}{-}}\NormalTok{ dias\_mes[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(dias\_mes) }\SpecialCharTok{\&}\NormalTok{ dias\_mes }\SpecialCharTok{\textgreater{}=} \DecValTok{1} \SpecialCharTok{\&}\NormalTok{ dias\_mes }\SpecialCharTok{\textless{}=} \DecValTok{31}\NormalTok{]}
+        
+\NormalTok{        registros\_mes }\OtherTok{\textless{}{-}} \DecValTok{0}
+        
+        \CommentTok{\# Procesar cada fila de datos que vendra siendo cada hora del dia}
+        \ControlFlowTok{for}\NormalTok{ (fila }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(datos\_mes)) \{}
+\NormalTok{          primera\_col }\OtherTok{\textless{}{-}}\NormalTok{ datos\_mes[fila, }\DecValTok{1}\NormalTok{]}
+          
+          \CommentTok{\# Verificar que la celda no esté vacía}
+          \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(primera\_col) }\SpecialCharTok{\&\&} \SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(primera\_col) }\SpecialCharTok{\&\&}\NormalTok{ primera\_col }\SpecialCharTok{!=} \StringTok{""}\NormalTok{) \{}
+            
+            \CommentTok{\# VAlidamos que los datos vengan en formato de fraccion que es el formato que usa excel para las horas}
+            \CommentTok{\# suppressWarnings evita mostrar advertencias si la conversión falla}
+\NormalTok{            hora\_fraccion }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(primera\_col))}
+            
+            \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(hora\_fraccion) }\SpecialCharTok{\&\&} \FunctionTok{is.numeric}\NormalTok{(hora\_fraccion)) \{}
+              \CommentTok{\# Convertir la fracción de día a hora del día (0{-}23) para que sea facil de entender}
+\NormalTok{              hora }\OtherTok{\textless{}{-}} \FunctionTok{floor}\NormalTok{(hora\_fraccion }\SpecialCharTok{*} \DecValTok{24}\NormalTok{)}
+              
+              \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(hora) }\SpecialCharTok{\&\&}\NormalTok{ hora }\SpecialCharTok{\textgreater{}=} \DecValTok{0} \SpecialCharTok{\&\&}\NormalTok{ hora }\SpecialCharTok{\textless{}=} \DecValTok{23}\NormalTok{) \{}
+                
+                \CommentTok{\# Procesar cada día del mes actual}
+                \ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(dias\_mes)) \{}
+\NormalTok{                  dia }\OtherTok{\textless{}{-}}\NormalTok{ dias\_mes[col]}
+                  
+                  \CommentTok{\# Obtener el precio de energía para esta hora y día específicos}
+                  \CommentTok{\# col + 2 porque las primeras 2 columnas son hora, los días empiezan en la 3ra}
+\NormalTok{                  precio\_raw }\OtherTok{\textless{}{-}}\NormalTok{ datos\_mes[fila, col }\SpecialCharTok{+} \DecValTok{2}\NormalTok{]}
+\NormalTok{                  precio }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(precio\_raw))}
+                  
+                  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(precio) }\SpecialCharTok{\&\&} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(dia) }\SpecialCharTok{\&\&}\NormalTok{ precio }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+                    \CommentTok{\# Agregar este registro al data frame de datos completos}
+\NormalTok{                    datos\_completos }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(datos\_completos, }\FunctionTok{data.frame}\NormalTok{(}
+                      \AttributeTok{mes =}\NormalTok{ mes,              }
+                      \AttributeTok{mes\_num =}\NormalTok{ i,            }
+                      \AttributeTok{dia =}\NormalTok{ dia,              }
+                      \AttributeTok{hora =}\NormalTok{ hora,            }
+                      \AttributeTok{precio\_mwh =}\NormalTok{ precio,    }\CommentTok{\# Precio de energía en USD/MWh}
+                      \AttributeTok{stringsAsFactors =} \ConstantTok{FALSE} 
+\NormalTok{                    ))}
+                    \CommentTok{\# Incrementar el contador de registros procesados para este mes}
+\NormalTok{                    registros\_mes }\OtherTok{\textless{}{-}}\NormalTok{ registros\_mes }\SpecialCharTok{+} \DecValTok{1}
+\NormalTok{                  \}}
+\NormalTok{                \}}
+\NormalTok{              \}}
+\NormalTok{            \}}
+\NormalTok{          \}}
+\NormalTok{        \}}
+        \FunctionTok{cat}\NormalTok{(registros\_mes, }\StringTok{"registros}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{      \} }\ControlFlowTok{else}\NormalTok{ \{}
+        \CommentTok{\# Si no se encontró la fila de "Hora"}
+        \FunctionTok{cat}\NormalTok{(}\StringTok{"no se encontró fila \textquotesingle{}Hora\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{      \}}
+\NormalTok{    \}, }\AttributeTok{error =} \ControlFlowTok{function}\NormalTok{(e) \{}
+      \CommentTok{\# Si ocurre algún error durante el procesamiento, mostrar el mensaje}
+      \FunctionTok{cat}\NormalTok{(}\StringTok{"Error:"}\NormalTok{, }\FunctionTok{conditionMessage}\NormalTok{(e), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{    \})}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Mostrar el total de registros procesados de todos los meses}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"Total de registros procesados:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(datos\_completos), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{return}\NormalTok{(datos\_completos)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Procesar datos}\label{procesar-datos}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ejecutar la función para procesar todos los datos del archivo Excel}
+\NormalTok{datos }\OtherTok{\textless{}{-}} \FunctionTok{procesar\_datos\_energia}\NormalTok{(ARCHIVO\_EXCEL)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 672 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 720 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 720 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 720 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 720 registros
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> `...1`
+## * `` -> `...2`
+## * `` -> `...3`
+## * `` -> `...4`
+## * `` -> `...5`
+## * `` -> `...6`
+## * `` -> `...7`
+## * `` -> `...8`
+## * `` -> `...9`
+## * `` -> `...10`
+## * `` -> `...11`
+## * `` -> `...12`
+## * `` -> `...13`
+## * `` -> `...14`
+## * `` -> `...15`
+## * `` -> `...16`
+## * `` -> `...17`
+## * `` -> `...18`
+## * `` -> `...19`
+## * `` -> `...20`
+## * `` -> `...21`
+## * `` -> `...22`
+## * `` -> `...23`
+## * `` -> `...24`
+## * `` -> `...25`
+## * `` -> `...26`
+## * `` -> `...27`
+## * `` -> `...28`
+## * `` -> `...29`
+## * `` -> `...30`
+## * `` -> `...31`
+## * `` -> `...32`
+## * `` -> `...33`
+\end{verbatim}
+
+\begin{verbatim}
+## 744 registros
+## Total de registros procesados: 8760
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Filtrar los datos para incluir solo las horas del horario laboral (8:00 a 20:00)}
+\NormalTok{datos\_laborales }\OtherTok{\textless{}{-}}\NormalTok{ datos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(hora }\SpecialCharTok{\%in\%}\NormalTok{ HORARIO\_LABORAL)}
+
+\NormalTok{resumen\_datos }\OtherTok{\textless{}{-}}\NormalTok{ datos\_laborales }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(mes) }\SpecialCharTok{\%\textgreater{}\%}  \CommentTok{\# Agrupar los datos por mes}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{registros =} \FunctionTok{n}\NormalTok{(),  }
+    \AttributeTok{precio\_min =} \FunctionTok{min}\NormalTok{(precio\_mwh, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),      }
+    \AttributeTok{precio\_max =} \FunctionTok{max}\NormalTok{(precio\_mwh, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),      }
+    \AttributeTok{precio\_promedio =} \FunctionTok{mean}\NormalTok{(precio\_mwh, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }
+    \AttributeTok{.groups =} \StringTok{\textquotesingle{}drop\textquotesingle{}}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Calculos}\label{calculos}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular los costos mensuales basados en el consumo actual}
+\NormalTok{costos\_mensuales }\OtherTok{\textless{}{-}}\NormalTok{ datos\_laborales }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(mes, mes\_num) }\SpecialCharTok{\%\textgreater{}\%}  \CommentTok{\# Agrupar por mes y número de mes}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{precio\_promedio =} \FunctionTok{mean}\NormalTok{(precio\_mwh, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{registros =} \FunctionTok{n}\NormalTok{(),  }
+    \AttributeTok{.groups =} \StringTok{\textquotesingle{}drop\textquotesingle{}}  
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \CommentTok{\# Precio promedio × Consumo por hora × Horas por día × Días por mes}
+    \AttributeTok{costo\_mensual\_actual =}\NormalTok{ precio\_promedio }\SpecialCharTok{*}\NormalTok{ CONSUMO\_ACTUAL }\SpecialCharTok{*}\NormalTok{ HORAS\_ACTUALES }\SpecialCharTok{*}\NormalTok{ DIAS\_LABORALES\_MES}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(mes\_num)}
+
+\CommentTok{\# Calcular el costo total anual sumando todos los costos mensuales}
+\NormalTok{costo\_anual\_actual }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(costos\_mensuales}\SpecialCharTok{$}\NormalTok{costo\_mensual\_actual)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{RESPUESTA 1}\label{respuesta-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{COSTO ACTUAL DEL CONSUMO ENERGÉTICO}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Costo anual total:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(costo\_anual\_actual), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Costo mensual promedio:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(costo\_anual\_actual}\SpecialCharTok{/}\DecValTok{12}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## COSTO ACTUAL DEL CONSUMO ENERGÉTICO
+##  Costo anual total: $112,476 
+##  Costo mensual promedio: $9,373.04
+\end{verbatim}
+
+\section{2. Si se modifica el modelo para que los robots consuman 0.15
+MWh, pero trabajen la mitad del tiempo, ¿sigue siendo rentable la
+operación?}\label{si-se-modifica-el-modelo-para-que-los-robots-consuman-0.15-mwh-pero-trabajen-la-mitad-del-tiempo-sigue-siendo-rentable-la-operaciuxf3n}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CONSUMO\_NUEVO }\OtherTok{\textless{}{-}} \FloatTok{0.15}
+\NormalTok{HORAS\_NUEVAS }\OtherTok{\textless{}{-}}\NormalTok{ HORAS\_ACTUALES }\SpecialCharTok{/} \DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Calculos}\label{calculos-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{costos\_mensuales\_nuevos }\OtherTok{\textless{}{-}}\NormalTok{ costos\_mensuales }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+  \AttributeTok{costo\_mensual\_nuevo =}\NormalTok{ precio\_promedio }\SpecialCharTok{*}\NormalTok{ CONSUMO\_NUEVO }\SpecialCharTok{*}\NormalTok{ HORAS\_NUEVAS }\SpecialCharTok{*}\NormalTok{ DIAS\_LABORALES\_MES,}
+  \AttributeTok{ahorro\_mensual =}\NormalTok{ costo\_mensual\_actual }\SpecialCharTok{{-}}\NormalTok{ costo\_mensual\_nuevo,}
+    \AttributeTok{porcentaje\_ahorro =}\NormalTok{ (ahorro\_mensual }\SpecialCharTok{/}\NormalTok{ costo\_mensual\_actual) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{  )}
+
+\NormalTok{costo\_anual\_nuevo }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(costos\_mensuales\_nuevos}\SpecialCharTok{$}\NormalTok{costo\_mensual\_nuevo)}
+\NormalTok{ahorro\_anual }\OtherTok{\textless{}{-}}\NormalTok{ costo\_anual\_actual }\SpecialCharTok{{-}}\NormalTok{ costo\_anual\_nuevo}
+\NormalTok{porcentaje\_ahorro\_anual }\OtherTok{\textless{}{-}}\NormalTok{ (ahorro\_anual }\SpecialCharTok{/}\NormalTok{ costo\_anual\_actual) }\SpecialCharTok{*} \DecValTok{100}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{RESPUESTA 2}\label{respuesta-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{RENTABILIDAD DEL NUEVO MODELO}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Costo anual actual:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(costo\_anual\_actual), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Costo anual propuesto:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(costo\_anual\_nuevo), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Ahorro anual:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(ahorro\_anual), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"Porcentaje de ahorro:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(porcentaje\_ahorro\_anual, }\DecValTok{1}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## RENTABILIDAD DEL NUEVO MODELO
+##  Costo anual actual: $112,476 
+##  Costo anual propuesto: $42,178.68 
+##  Ahorro anual: $70,297.79 
+##  Porcentaje de ahorro: 62.5 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{" El modelo propuesto genera ahorros superiores al 60\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  El modelo propuesto genera ahorros superiores al 60%
+\end{verbatim}
+
+\section{3. Los inversores desean identificar el mes más rentable y el
+mes menos rentable. Esta información debe presentarse
+en:}\label{los-inversores-desean-identificar-el-mes-muxe1s-rentable-y-el-mes-menos-rentable.-esta-informaciuxf3n-debe-presentarse-en}
+
+\subsection{Una tabla comparativa
+mensual.}\label{una-tabla-comparativa-mensual.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tabla\_comparativa }\OtherTok{\textless{}{-}}\NormalTok{ costos\_mensuales\_nuevos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{Mes =}\NormalTok{ mes,}
+    \StringTok{\textasciigrave{}}\AttributeTok{Precio Promedio ($/MWh)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{round}\NormalTok{(precio\_promedio, }\DecValTok{2}\NormalTok{),}
+    \StringTok{\textasciigrave{}}\AttributeTok{Costo Actual ($)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{round}\NormalTok{(costo\_mensual\_actual, }\DecValTok{0}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Mes, }\StringTok{\textasciigrave{}}\AttributeTok{Precio Promedio ($/MWh)}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{Costo Actual ($)}\StringTok{\textasciigrave{}}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(tabla\_comparativa)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 12 x 3
+##    Mes        `Precio Promedio ($/MWh)` `Costo Actual ($)`
+##    <chr>                          <dbl>              <dbl>
+##  1 ENERO                           80.7               6292
+##  2 FEBRERO                         88.1               6869
+##  3 MARZO                          125.                9713
+##  4 ABRIL                          126.                9842
+##  5 MAYO                           181.               14111
+##  6 JUNIO                          184.               14351
+##  7 JULIO                          122.                9529
+##  8 AGOSTO                         116.                9029
+##  9 SEPTIEMBRE                     104.                8087
+## 10 OCTUBRE                        109.                8477
+## 11 NOVIEMBRE                      107.                8358
+## 12 DICIEMBRE                      100.                7819
+\end{verbatim}
+
+\subsection{Una gráfica ordenada por mes, que permita visualizar
+tendencias de aumento o disminución en la
+rentabilidad.}\label{una-gruxe1fica-ordenada-por-mes-que-permita-visualizar-tendencias-de-aumento-o-disminuciuxf3n-en-la-rentabilidad.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{datos\_grafico }\OtherTok{\textless{}{-}}\NormalTok{ costos\_mensuales\_nuevos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(mes, mes\_num, costo\_mensual\_actual, costo\_mensual\_nuevo, precio\_promedio, ahorro\_mensual) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(costo\_mensual\_actual, costo\_mensual\_nuevo), }
+               \AttributeTok{names\_to =} \StringTok{"modelo"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"costo"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{modelo =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      modelo }\SpecialCharTok{==} \StringTok{"costo\_mensual\_actual"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Modelo Actual"}\NormalTok{,}
+\NormalTok{      modelo }\SpecialCharTok{==} \StringTok{"costo\_mensual\_nuevo"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Modelo Propuesto"}
+\NormalTok{    ),}
+    \AttributeTok{mes\_abrev =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{substr}\NormalTok{(mes, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{), }
+                       \AttributeTok{levels =} \FunctionTok{substr}\NormalTok{(MESES, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\NormalTok{  )}
+
+\NormalTok{grafico\_costos }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(datos\_grafico, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ mes\_num, }\AttributeTok{y =}\NormalTok{ costo, }\AttributeTok{color =}\NormalTok{ modelo)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size =} \FloatTok{1.2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{3.5}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.9}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{12}\NormalTok{, }\AttributeTok{labels =} \FunctionTok{substr}\NormalTok{(MESES, }\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{dollar\_format}\NormalTok{()) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}
+    \AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Modelo Actual"} \OtherTok{=} \StringTok{"\#E74C3C"}\NormalTok{, }\StringTok{"Modelo Propuesto"} \OtherTok{=} \StringTok{"\#27AE60"}\NormalTok{),}
+    \AttributeTok{name =} \StringTok{"Modelo"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Comparación de Costos Energéticos Mensuales 2023"}\NormalTok{,}
+    \AttributeTok{subtitle =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Smart Packaging {-} Ahorro anual proyectado:"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(ahorro\_anual)),}
+    \AttributeTok{x =} \StringTok{"Mes"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Costo Mensual (USD)"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"Fuente: POE\_2023.xslx"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{16}\NormalTok{, }\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{),}
+    \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{, }\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#349beb"}\NormalTok{),}
+    \AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{,}
+    \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{(),}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## i Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(grafico\_costos)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{\%5BMyS1\%5DP1_G6_Copia3_files/figure-latex/unnamed-chunk-11-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Filtrar los datos del mes de ENERO}
+\NormalTok{enero\_data }\OtherTok{\textless{}{-}}\NormalTok{ datos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(mes }\SpecialCharTok{==} \StringTok{"ENERO"}\NormalTok{)}
+
+\CommentTok{\# Función para calcular el costo total según las horas activas}
+\NormalTok{calcular\_costo\_esquema }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(horas\_activas) \{}
+\NormalTok{  enero\_data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(hora }\SpecialCharTok{\%in\%}\NormalTok{ horas\_activas) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{costo\_total =} \FunctionTok{sum}\NormalTok{(precio\_mwh }\SpecialCharTok{*} \FloatTok{0.2}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pull}\NormalTok{(costo\_total)}
+\NormalTok{\}}
+
+\CommentTok{\# Definir horas activas por alternativa}
+\NormalTok{horas\_a }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\SpecialCharTok{:}\DecValTok{11}\NormalTok{, }\DecValTok{16}\SpecialCharTok{:}\DecValTok{23}\NormalTok{)       }\CommentTok{\# a) descansa 00{-}04 y 12{-}16}
+\NormalTok{horas\_b }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{7}\NormalTok{, }\DecValTok{12}\SpecialCharTok{:}\DecValTok{15}\NormalTok{, }\DecValTok{20}\SpecialCharTok{:}\DecValTok{23}\NormalTok{) }\CommentTok{\# b) descansa 08{-}12 y 16{-}20}
+\NormalTok{horas\_c }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{7}\NormalTok{, }\DecValTok{12}\SpecialCharTok{:}\DecValTok{19}\NormalTok{)        }\CommentTok{\# c) descansa 08{-}12 y 20{-}24}
+
+\CommentTok{\# Calcular costos por alternativa}
+\NormalTok{costo\_a }\OtherTok{\textless{}{-}} \FunctionTok{calcular\_costo\_esquema}\NormalTok{(horas\_a)}
+\NormalTok{costo\_b }\OtherTok{\textless{}{-}} \FunctionTok{calcular\_costo\_esquema}\NormalTok{(horas\_b)}
+\NormalTok{costo\_c }\OtherTok{\textless{}{-}} \FunctionTok{calcular\_costo\_esquema}\NormalTok{(horas\_c)}
+
+\CommentTok{\# Crear tabla comparativa}
+\NormalTok{df\_costos }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Alternativa =} \FunctionTok{c}\NormalTok{(}\StringTok{"a) 00{-}04 \& 12{-}16"}\NormalTok{, }\StringTok{"b) 08{-}12 \& 16{-}20"}\NormalTok{, }\StringTok{"c) 08{-}12 \& 20{-}24"}\NormalTok{),}
+  \AttributeTok{Horas\_Operativas =} \FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(horas\_a), }\FunctionTok{length}\NormalTok{(horas\_b), }\FunctionTok{length}\NormalTok{(horas\_c)) }\SpecialCharTok{*} \DecValTok{31}\NormalTok{,  }\CommentTok{\# enero tiene 31 días}
+  \AttributeTok{Consumo\_Total\_MWh =} \FunctionTok{round}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(horas\_a), }\FunctionTok{length}\NormalTok{(horas\_b), }\FunctionTok{length}\NormalTok{(horas\_c)) }\SpecialCharTok{*} \DecValTok{31} \SpecialCharTok{*} \FloatTok{0.2}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+  \AttributeTok{Costo\_Total\_USD =} \FunctionTok{round}\NormalTok{(}\FunctionTok{c}\NormalTok{(costo\_a, costo\_b, costo\_c), }\DecValTok{2}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Mostrar tabla}
+\NormalTok{df\_costos}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Alternativa Horas_Operativas Consumo_Total_MWh Costo_Total_USD
+## 1 a) 00-04 & 12-16              496              99.2         7591.42
+## 2 b) 08-12 & 16-20              496              99.2         7331.06
+## 3 c) 08-12 & 20-24              496              99.2         8631.88
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\FunctionTok{ggplot}\NormalTok{(df\_costos, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Alternativa, }\AttributeTok{y =}\NormalTok{ Costo\_Total\_USD, }\AttributeTok{fill =}\NormalTok{ Alternativa)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"$"}\NormalTok{, }\FunctionTok{round}\NormalTok{(Costo\_Total\_USD, }\DecValTok{2}\NormalTok{))), }\AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Comparación de Costos por Esquema de Operación (ENERO)"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Alternativa"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Costo Total (USD)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{\%5BMyS1\%5DP1_G6_Copia3_files/figure-latex/unnamed-chunk-13-1.pdf}}
+Conclusión Las tres alternativas propuestas mantuvieron el mismo consumo
+total, pero el costo varió según el horario operado. La opción b) fue la
+más económica, lo que demuestra que operar en horas con menor tarifa
+puede reducir costos sin afectar la productividad.
+
+\subsection{5. Enriquecimiento de la
+información}\label{enriquecimiento-de-la-informaciuxf3n}
+
+El presente análisis evalúa el consumo energético de Smart Packaging
+durante el año 2023, enriqueciendo los datos originales con variables
+contextuales clave para una mejor comprensión de los patrones de consumo
+y su impacto en la rentabilidad del negocio.
+
+\begin{verbatim}
+## # A tibble: 1 x 7
+##   total_registros consumo_promedio consumo_mediano consumo_min consumo_max
+##             <int>            <dbl>           <dbl>       <dbl>       <dbl>
+## 1            9855             105.            105.       0.875        453.
+## # i 2 more variables: desviacion_std <dbl>, consumo_total_anual <dbl>
+## # A tibble: 4 x 5
+##   tipo_dia       registros consumo_promedio consumo_total desviacion_std
+##   <chr>              <int>            <dbl>         <dbl>          <dbl>
+## 1 Viernes             1296            114.        147252.           55.0
+## 2 Semana Laboral      5508            111.        612279.           54.2
+## 3 Fin de Semana       2727             93.7       255459.           45.7
+## 4 Feriado              324             72.3        23413.           38.7
+## # A tibble: 4 x 5
+##   estacion  registros consumo_promedio consumo_total desviacion_std
+##   <chr>         <int>            <dbl>         <dbl>          <dbl>
+## 1 Primavera      2484            129.        319710.           49.0
+## 2 Invierno       2484            125.        310279.           56.6
+## 3 Otoño          2457             85.4       209819.           42.5
+## 4 Verano         2430             81.7       198595.           42.0
+## 
+## === ANÁLISIS POR PERÍODO DEL DÍA ===
+## # A tibble: 3 x 5
+##   periodo_dia registros consumo_promedio consumo_total desviacion_std
+##   <chr>           <int>            <dbl>         <dbl>          <dbl>
+## 1 Madrugada        8395            106.        893736.           52.0
+## 2 <NA>             1095            106.        115642.           58.7
+## 3 Mañana            365             79.5        29024.           38.5
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{\%5BMyS1\%5DP1_G6_Copia3_files/figure-latex/funciones_estadisticas-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{\%5BMyS1\%5DP1_G6_Copia3_files/figure-latex/funciones_estadisticas-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{\%5BMyS1\%5DP1_G6_Copia3_files/figure-latex/funciones_estadisticas-3.pdf}}
+
+\begin{verbatim}
+## 
+## === RESUMEN DE INSIGHTS CLAVE ===
+## 1. Total de registros procesados: 9855 
+## 2. Consumo total anual: 1038402 MWh
+## 3. Consumo promedio diario: 105.37 MWh
+## 4. Archivo de datos enriquecidos guardado exitosamente
+\end{verbatim}
+
+\end{document}
