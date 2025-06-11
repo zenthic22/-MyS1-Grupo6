@@ -3,6 +3,10 @@ title: "Practica 1 - G8"
 output:
   html_document:
     df_print: paged
+<<<<<<< HEAD:Practicas/Practica1/R/[MyS1]P1_G6_Copia3.Rmd
+=======
+  pdf_document: default
+>>>>>>> feature/practica_R:R/[MyS1]P1_G6_Copia3.Rmd
 editor_options:
   chunk_output_type: inline
 ---
@@ -29,7 +33,11 @@ DIAS_LABORALES_MES <- 30
 
 # Parámetros del problema
 CONSUMO_ACTUAL <- 0.2
+<<<<<<< HEAD:Practicas/Practica1/R/[MyS1]P1_G6_Copia3.Rmd
 HORAS_ACTUALES <- length(HORARIO_LABORAL) #las horas que se trabajan al dia
+=======
+HORAS_ACTUALES <- 12 #las horas que se trabajan al dia
+>>>>>>> feature/practica_R:R/[MyS1]P1_G6_Copia3.Rmd
 
 MESES <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
            "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE")
@@ -37,7 +45,11 @@ MESES <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
 
 ## Funcion para procesar la información del excel
 
+<<<<<<< HEAD:Practicas/Practica1/R/[MyS1]P1_G6_Copia3.Rmd
 ```{r}
+=======
+```{r include=FALSE}
+>>>>>>> feature/practica_R:R/[MyS1]P1_G6_Copia3.Rmd
 procesar_datos_energia <- function(archivo_excel) {
   
   if (!file.exists(archivo_excel)) {
@@ -116,10 +128,17 @@ procesar_datos_energia <- function(archivo_excel) {
             }
           }
         }
+<<<<<<< HEAD:Practicas/Practica1/R/[MyS1]P1_G6_Copia3.Rmd
         cat(registros_mes, "registros\n")
       } else {
         # Si no se encontró la fila de "Hora"
         cat("no se encontró fila 'Hora'\n")
+=======
+        #cat(registros_mes, "registros\n")
+      } else {
+        # Si no se encontró la fila de "Hora"
+        #cat("no se encontró fila 'Hora'\n")
+>>>>>>> feature/practica_R:R/[MyS1]P1_G6_Copia3.Rmd
       }
     }, error = function(e) {
       # Si ocurre algún error durante el procesamiento, mostrar el mensaje
@@ -135,7 +154,11 @@ procesar_datos_energia <- function(archivo_excel) {
 
 ### Procesar datos
 
+<<<<<<< HEAD:Practicas/Practica1/R/[MyS1]P1_G6_Copia3.Rmd
 ```{r}
+=======
+```{r include=FALSE}
+>>>>>>> feature/practica_R:R/[MyS1]P1_G6_Copia3.Rmd
 # Ejecutar la función para procesar todos los datos del archivo Excel
 datos <- procesar_datos_energia(ARCHIVO_EXCEL)
 
