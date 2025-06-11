@@ -3,6 +3,7 @@ title: "Practica 1 - G8"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 editor_options:
   chunk_output_type: inline
 ---
@@ -29,7 +30,7 @@ DIAS_LABORALES_MES <- 30
 
 # Parámetros del problema
 CONSUMO_ACTUAL <- 0.2
-HORAS_ACTUALES <- length(HORARIO_LABORAL) #las horas que se trabajan al dia
+HORAS_ACTUALES <- 12 #las horas que se trabajan al dia
 
 MESES <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
            "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE")
@@ -37,7 +38,7 @@ MESES <- c("ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
 
 ## Funcion para procesar la información del excel
 
-```{r}
+```{r include=FALSE}
 procesar_datos_energia <- function(archivo_excel) {
   
   if (!file.exists(archivo_excel)) {
@@ -116,10 +117,10 @@ procesar_datos_energia <- function(archivo_excel) {
             }
           }
         }
-        cat(registros_mes, "registros\n")
+        #cat(registros_mes, "registros\n")
       } else {
         # Si no se encontró la fila de "Hora"
-        cat("no se encontró fila 'Hora'\n")
+        #cat("no se encontró fila 'Hora'\n")
       }
     }, error = function(e) {
       # Si ocurre algún error durante el procesamiento, mostrar el mensaje
@@ -135,7 +136,7 @@ procesar_datos_energia <- function(archivo_excel) {
 
 ### Procesar datos
 
-```{r}
+```{r include=FALSE}
 # Ejecutar la función para procesar todos los datos del archivo Excel
 datos <- procesar_datos_energia(ARCHIVO_EXCEL)
 
