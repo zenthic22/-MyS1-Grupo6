@@ -1,0 +1,4 @@
+Time(Hours);EntityID;ObjectName;ProcessID;StepName;Action
+0.24111971305747;Cliente.67;Verificacion;6.OnEnteredProcessing;[Delay] ProcessingTime;Invalid value '-0.00174792064488763' Hours returned for property 'Delay.DelayTime'. The value cannot be negative.
+0.24111971305747;Cliente.67;Verificacion;6.OnEnteredProcessing;[Delay] ProcessingTime;If the property is an expression and a probability distribution is being used, then verify that the distribution's range of values is bounded to not include negative quantities.
+
