@@ -13,7 +13,8 @@
 
 |     CARPETA     |   MD   | PDF | Fecha Entrega | Prorroga |
 | :-------------: | :----: | :---: | :-----------: | :------: |
-| [Practica 01](./Practicas/Practica1/) | [View](./Manuales/Practica1/) | [View](./Manuales/Practica1/Manual-MyS1-G6.pdf) | 11/06 |   ---   |/Manual-MyS1-G6.pdf| [Practica 02](./Practicas/Practica2/) | [View](./Manuales/Practica2/) | [View](./Manuales/Practica2/) | --- |   ---   |
+| [Practica 01](./Practicas/Practica1/) | [View](./Manuales/Practica1/) | [View](./Manuales/Practica1/Manual-MyS1-G6.pdf) | 11/06 |   ---   |
+| [Practica 02](./Practicas/Practica2/) | [View](./Manuales/Practica2/) | [View](./Manuales/Practica2/) | 17/06 |   ---   |
 
 ### Proyecto
 
@@ -40,8 +41,8 @@
             <td align="center">---</td>
         </tr>
         <tr>
-            <td rowspan=1 align="center"><a href="./Enunciados">Practica 02</a></td>
-            <td align="center">---</td>
+            <td rowspan=1 align="center"><a href="./Enunciados/Practica2.pdf">Practica 02</a></td>
+            <td align="center">17/Jun</td>
             <td align="center">---</td>
         </tr>
         <tr>
