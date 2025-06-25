@@ -1,4 +1,10 @@
 Time(Hours);EntityID;ObjectName;ProcessID;StepName;Action
-9.65856094823457;--;--;--;--;The maximum number in system limit for entities of type 'Granelera1' has been exceeded.
-9.65856094823457;--;--;--;--;Possible causes:
+16.6300685115127;--;--;--;--;The maximum number in system limit for entities of type 'Granelera1' has been exceeded.
+16.6300685115127;--;--;--;--;Possible causes:
+18.0736534732521;--;--;--;--;The maximum number in system limit for entities of type '2kg_GP' has been exceeded.
+18.0736534732521;--;--;--;--;Possible causes:
+18.2076240670685;--;--;--;--;The maximum number in system limit for entities of type '2kg_S' has been exceeded.
+18.2076240670685;--;--;--;--;Possible causes:
+25.3567351781807;--;--;--;--;The number of active entities in the simulation has exceeded 20,000 objects
+25.3567351781807;--;--;--;--;This may indicate that there is a logic problem in the model which is creating too many entities or is not destroying them. 
 
