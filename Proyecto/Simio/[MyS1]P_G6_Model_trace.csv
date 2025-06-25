@@ -1,0 +1,3 @@
+Time(Hours);EntityID;ObjectName;ProcessID;StepName;Action
+3.45765974738896;Granelera1.48;Model;52.Punto_Control_Entered;[Ride] Ride2;Error initiating ride request for entity 'Granelera1.48'. The entity's current location '[Station] Punto_Control.InputBuffer' is invalid for attempting a ride request. The entity must be located either at a node or in a station location owned by a node.
+
